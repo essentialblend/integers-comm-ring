@@ -1,0 +1,56 @@
+module integers_MAIN.properties.addition.neutralities where
+
+open import natural_numbers.definition
+
+open import predicate_logic.definitions
+open import predicate_logic.properties
+
+open import integers_MAIN.definition
+open import integers_MAIN.operations
+open import integers_MAIN.properties.lemmas.incr_decr
+open import integers_MAIN.properties.lemmas.incr_decr_idZ
+
+
+-- Property: Left Neutrality for ℤ
+leftNeutrality+ℤ+ : ∀ (x : ℤ) → ((pos zero) + x) ≡ idℤ x
+leftNeutrality+ℤ+ (pos x) = refl
+leftNeutrality+ℤ+ (neg x) = refl
+
+-- Optional: Left Neutrality for neg zero.
+leftNeutrality-ℤ+ : (x : ℤ) → ((neg zero) + x) ≡ idℤ x
+leftNeutrality-ℤ+ (pos zero) = refl
+leftNeutrality-ℤ+ (pos (suc y)) = refl
+leftNeutrality-ℤ+ (neg zero) = refl
+leftNeutrality-ℤ+ (neg (suc y)) = refl
+
+
+-- Property: Right Neutrality for ℤ
+rightNeutrality+ℤ+ : (x : ℤ) → (x + pos zero) ≡ idℤ x
+rightNeutrality+ℤ+ (pos zero) = refl
+rightNeutrality+ℤ+ (pos (suc x)) = propertyTransitivity (propertySymmetry (incr[a+b]≡incr[a]+b (pos (x)) {pos zero})) (congruence incrementℤ (rightNeutrality+ℤ+ (pos (x))))
+rightNeutrality+ℤ+ (neg zero) = refl
+rightNeutrality+ℤ+ (neg (suc zero)) = refl
+rightNeutrality+ℤ+ (neg (suc (suc x))) =  congruence decrementℤ (rightNeutrality+ℤ+ (neg (suc (x))))
+
+-- Optional: Right Neutrality for neg zero
+rightNeutrality-ℤ+ : (x : ℤ) → (x + (neg zero)) ≡ idℤ x
+rightNeutrality-ℤ+ (pos zero) = refl
+rightNeutrality-ℤ+ (pos (suc x)) = propertyTransitivity (propertySymmetry (incr[a+b]≡incr[a]+b (pos x) {neg zero})) (congruence incrementℤ (rightNeutrality-ℤ+ (pos (x))))
+rightNeutrality-ℤ+ (neg zero) = refl
+rightNeutrality-ℤ+ (neg (suc zero)) = refl
+rightNeutrality-ℤ+ (neg (suc (suc x))) = congruence decrementℤ (rightNeutrality-ℤ+ (neg (suc (x))))
+
+
+-- 
+-- Left: zero * n ≡ zero 
+leftZero+ℤ* : (y : ℤ) → (pos zero * y) ≡ pos zero
+leftZero+ℤ* y = refl
+
+-- Right: n * zero ≡ zero
+rightZero+ℤ* : (y : ℤ) → (y * pos zero) ≡ pos zero
+rightZero+ℤ* (pos zero) = refl
+rightZero+ℤ* (pos (suc zero)) = refl
+rightZero+ℤ* (pos (suc (suc y))) = propertyTransitivity (propertySymmetry (idx1-2 (pos y * pos zero))) (rightZero+ℤ* (pos (suc y)))
+rightZero+ℤ* (neg zero) = refl
+rightZero+ℤ* (neg (suc zero)) = refl
+rightZero+ℤ* (neg (suc (suc y))) = propertyTransitivity (propertySymmetry (idx1-2 (neg y * pos zero))) (rightZero+ℤ* (neg (suc y)))

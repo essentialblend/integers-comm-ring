@@ -1,0 +1,83 @@
+module integers_MAIN.properties.distributive_laws where
+
+open import natural_numbers.definition
+open import natural_numbers.operations renaming (_+_ to _ℕ+_; _*_ to _*ℕ_)
+
+
+open import predicate_logic.definitions
+open import predicate_logic.properties
+
+open import integers_MAIN.definition
+open import integers_MAIN.operations
+
+open import integers_MAIN.properties.addition.neutralities
+open import integers_MAIN.properties.addition.inverses
+open import integers_MAIN.properties.addition.commutativity
+open import integers_MAIN.properties.addition.associativity
+
+open import integers_MAIN.properties.lemmas.incr_decr
+open import integers_MAIN.properties.lemmas.incr_decr_idZ
+open import integers_MAIN.properties.lemmas.idZ
+open import integers_MAIN.properties.lemmas.negateZ
+
+-- Lemmas for distributive laws.
+
+-- a)
+distrIncrOverProducts : (x y : ℤ) → ((incrementℤ x) * y) ≡ (y + (x * y))
+distrIncrOverProducts (pos x) y = refl
+distrIncrOverProducts (neg zero) y = refl
+distrIncrOverProducts (neg (suc zero)) y = propertyTransitivity (propertyTransitivity (propertyTransitivity (propertySymmetry (propertyTransitivity (rightNeutrality+ℤ+ (negateℤ y + y)) (propertyTransitivity (idℤ+≡+ (negateℤ y) {y}) (leftAdditiveInverseℤ+ y)))) (associativityℤ+ (negateℤ y) (y) {pos zero})) (congruence (negateℤ y +_) (distrIncrOverProducts (neg zero) y))) (propertyTransitivity (propertySymmetry (associativityℤ+ (negateℤ y) (y) {pos zero})) (propertySymmetry (propertyTransitivity (propertySymmetry (associativityℤ+ (y) (negateℤ y) {pos zero})) (congruence (_+ pos zero) (commutativityℤ+ (y) {negateℤ y})))))
+distrIncrOverProducts (neg (suc (suc zero))) y = propertyTransitivity (propertyTransitivity (congruence (negateℤ y +_) refl) (congruence (negateℤ y +_) (distrIncrOverProducts (neg (suc (zero))) y))) (propertyTransitivity (propertySymmetry (associativityℤ+ (negateℤ y) (y) {negateℤ y + (neg zero * y)})) (propertyTransitivity (congruence (_+ (negateℤ y + (neg zero * y))) (commutativityℤ+ (negateℤ y) {y})) (associativityℤ+ (y) (negateℤ y) {negateℤ y + (neg zero * y)})))
+distrIncrOverProducts (neg (suc (suc (suc x)))) y = propertyTransitivity (congruence (negateℤ y +_) (distrIncrOverProducts (neg (suc (suc (x)))) y)) (propertySymmetry (propertyTransitivity (propertySymmetry (associativityℤ+ (y) (negateℤ y) {negateℤ y + (negateℤ y + (neg x * y))})) (propertySymmetry (propertyTransitivity (propertySymmetry (associativityℤ+ (negateℤ y) (y) {negateℤ y + (negateℤ y + (neg x * y))})) (congruence (_+ (negateℤ y + (negateℤ y + (neg x * y)))) (commutativityℤ+ (negateℤ y) {y}))))))
+
+-- c)
+rightDistLemma : (a : ℤ) {z : ℤ} → ((decrementℤ a) * z) ≡ (negateℤ z + (a * z))
+rightDistLemma (pos zero) = refl
+-- pos 3 * 2 == 2 + (2 * 2)
+rightDistLemma (pos (suc a)) {z} = propertyTransitivity (propertyTransitivity (propertyTransitivity (incr[decr[posa]*z]≡a*z a {z}) (distrIncrOverProducts (decrementℤ (pos a)) z)) (congruence (z +_) (rightDistLemma (pos a) {z}))) (propertyTransitivity (propertySymmetry (associativityℤ+ z (negateℤ z) {pos a * z})) (propertyTransitivity (congruence (_+ (pos a * z)) (commutativityℤ+ (z) {negateℤ z})) (associativityℤ+ (negateℤ z) (z) {pos a * z})))
+rightDistLemma (neg zero) = refl
+rightDistLemma (neg (suc a)) = refl
+
+-- d)
+a+b≡suca+sucb : (z : ℕ) → (neg z + pos z) ≡ (neg (suc z) + pos (suc z))
+a+b≡suca+sucb zero = refl
+a+b≡suca+sucb (suc z) = propertyTransitivity (propertyTransitivity (propertySymmetry (a+b≡suca+sucb z)) (a+b≡suca+sucb z)) (propertySymmetry (decr[a+b]≡a+decr[b] (neg (suc z)) {pos (suc (suc z))}))
+
+-- e)
+possucnegsucidℤ : (z : ℕ) → (pos (suc z) + neg (suc z)) ≡ (pos z + idℤ (neg z))
+possucnegsucidℤ zero = refl
+possucnegsucidℤ (suc (z)) = propertyTransitivity (incr[a+b]≡incr[a]+b (pos (suc z)) {neg (suc (suc z))}) (incr[a+b]≡a+incr[b] (pos (suc z)) {neg (suc (suc z))})
+
+-- f)
+z+negℤ≡poszero : (z : ℤ) → (z + (negateℤ z + pos zero)) ≡ pos zero
+z+negℤ≡poszero (pos zero) = refl
+z+negℤ≡poszero (pos (suc z)) = propertyTransitivity (propertyTransitivity (propertySymmetry (associativityℤ+ (pos (suc z)) (neg (suc z)) {pos zero})) (propertySymmetry (propertyTransitivity (propertySymmetry (associativityℤ+ (pos z) (idℤ (neg z)) {pos zero})) (propertySymmetry (congruence (_+ pos zero) ( (possucnegsucidℤ z))))))) (z+negℤ≡poszero (pos (z)))
+z+negℤ≡poszero (neg zero) = refl
+z+negℤ≡poszero (neg (suc z)) = propertyTransitivity (propertyTransitivity (propertySymmetry (associativityℤ+ (neg (suc z)) (pos (suc z)) {pos zero})) (propertySymmetry (propertyTransitivity (propertySymmetry (associativityℤ+ (neg z) (pos z) {pos zero})) (congruence (_+ (pos zero)) (a+b≡suca+sucb z))))) (z+negℤ≡poszero (neg (z)))
+
+-- g)
+rightDistrL : (x : ℕ) (y z : ℤ) → (negateℤ z + ((neg x + y) * z)) ≡ ((neg (suc x) + y) * z)
+rightDistrL zero (pos zero) z = refl
+rightDistrL zero (pos (suc zero)) z = propertyTransitivity (propertyTransitivity (propertySymmetry (propertyTransitivity (commutativityℤ+ (z) {negateℤ z + (pos zero * z)}) (propertyTransitivity (associativityℤ+ (negateℤ z) (pos zero * z) {z}) (congruence (negateℤ z +_) (commutativityℤ+ (pos zero * z) {z}))))) (congruence (z +_) (rightDistrL zero (pos (zero)) z))) (z+negℤ≡poszero z)
+rightDistrL zero (pos (suc (suc y))) z = propertyTransitivity (propertySymmetry (propertyTransitivity (propertySymmetry (associativityℤ+ (z) (negateℤ z) {z + (pos y * z)})) (propertySymmetry (propertyTransitivity (propertySymmetry (associativityℤ+ (negateℤ z) z {z + (pos y * z)})) (congruence (_+ (z + (pos y * z))) (commutativityℤ+ (negateℤ z) {z})))))) (congruence (z +_) (rightDistrL zero (pos (suc (y))) z))
+rightDistrL zero (neg zero) z = refl
+rightDistrL zero (neg (suc y)) z = refl
+rightDistrL (suc x) y z = propertyTransitivity (congruence ((negateℤ z) +_) (propertySymmetry (rightDistrL x y z))) (propertyTransitivity (congruence (negateℤ z +_) (rightDistrL x y z)) (propertySymmetry (rightDistLemma (neg (suc x) + y) {z})))
+
+
+-- Main Proofs
+
+-- Property: Left Distributive Law
+leftDistributivityℤ : (x y : ℤ) {z : ℤ} → (x * (y + z)) ≡ ((x * y) + (x * z))
+leftDistributivityℤ (pos zero) y = refl
+leftDistributivityℤ (pos (suc x)) y {z} = propertyTransitivity (congruence ((y + z) +_) (leftDistributivityℤ (pos (x)) y {z})) (propertyTransitivity (associativityℤ+ (y) (z) {(pos x * y) + (pos x * z)}) (propertyTransitivity (commutativityℤ+ (y) {z + ((pos x * y) + (pos x * z))}) (propertyTransitivity (propertyTransitivity (commutativityℤ+ (z + ((pos x * y) + (pos x * z))) {y}) (congruence (y +_) (propertySymmetry (propertyTransitivity (commutativityℤ+ (pos x * y) {z + (pos x * z)}) (propertyTransitivity (associativityℤ+ (z) (pos x * z) {pos x * y}) (congruence (z +_) (commutativityℤ+ (pos x * z) {pos x * y}))))))) (propertySymmetry (associativityℤ+ (y) (pos x * y) {z + (pos x * z)})))))
+leftDistributivityℤ (neg zero) y = refl
+leftDistributivityℤ (neg (suc x)) y {z} = propertyTransitivity (congruence (negateℤ (y + z) +_ ) (leftDistributivityℤ (neg (x)) y {z})) (propertySymmetry (propertyTransitivity (associativityℤ+ (negateℤ y) (neg x * y) {negateℤ z + (neg x * z)}) (propertySymmetry (propertyTransitivity (commutativityℤ+ (negateℤ (y + z)) {(neg x * y) + (neg x * z)}) (propertySymmetry (propertyTransitivity (commutativityℤ+ (negateℤ y) {(neg x * y) + (negateℤ z + (neg x * z))}) (propertyTransitivity (associativityℤ+ (neg x * y) (negateℤ z + (neg x * z)) {negateℤ y}) (propertySymmetry (propertyTransitivity (associativityℤ+ (neg x * y) (neg x * z) {negateℤ (y + z)}) (congruence ((neg x * y) +_ ) (propertySymmetry (propertyTransitivity (associativityℤ+ (negateℤ z) (neg x * z) {negateℤ y}) (propertyTransitivity (commutativityℤ+ (negateℤ z) {(neg x * z) + negateℤ y}) (propertyTransitivity (associativityℤ+ (neg x * z) (negateℤ y) {negateℤ z}) (congruence ((neg x * z) +_ ) (propertySymmetry (negateℤ[x+y]≡negℤx+negℤy y {z})))))))))))))))))
+
+
+-- Property: Right Distributive Law
+rightDistributivityℤ : (x y : ℤ) {z : ℤ} → ((x + y) * z) ≡ ((x * z) + (y * z))
+rightDistributivityℤ (pos zero) y {z} = propertySymmetry (idℤ[AxB]≡idℤAxB y z) 
+rightDistributivityℤ (pos (suc x)) y {z} = propertyTransitivity (propertyTransitivity (congruence (_* z) (propertySymmetry (incr[a+b]≡incr[a]+b (pos x) {y}))) (distrIncrOverProducts (pos x + y) z)) ((propertyTransitivity (congruence (z +_ ) (rightDistributivityℤ (pos (x)) y {z})) (propertySymmetry (associativityℤ+ z (pos x * z) {y * z}))))
+rightDistributivityℤ (neg zero) y {z} = propertySymmetry (idℤ[AxB]≡idℤAxB y z)
+rightDistributivityℤ (neg (suc x)) y {z} = propertyTransitivity (propertyTransitivity (propertySymmetry (rightDistrL x y z)) (congruence (negateℤ z +_) (rightDistributivityℤ (neg (x)) y {z}))) (propertySymmetry (associativityℤ+ (negateℤ z) (neg x * z) {y * z}))
