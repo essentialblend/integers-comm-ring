@@ -1,5 +1,9 @@
 # integers_comm_ring
 
+In this research project, I implement naive type-theoretical proofs to formalize abstract mathematical structures using Agda. This involves building every proof and construct from scratch, reasoning about them intuitionistically. 
+
+The final solution involves a variable of the type "Ring" which satisfies all the commutative ring axioms.
+
 Agda Codebase for "The Commutative Ring of Integers"
 ver: 2.6.3
 
