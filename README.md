@@ -3,6 +3,8 @@
 ## Aim
 The goal of this research project submitted as part of requirements for my MS, was to use Agda (a computerized proof assistant) to constructively build a set of proofs. These proofs are reasoned about intuitionistically, starting from base constructs all the way to various algebraic properties required for a certain abstract mathematical structure referred to as a Ring. 
 
+This project was supervised by Dr Thorsten Altenkirch, and I'm forever grateful for all his time, expertise and most importantly, empathy towards my journey with Type Theory. 
+
 The final solution involves an object of type "Ring" which satisfies all algebraic commutative ring axioms.
 
 ## Sample Proof
