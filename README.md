@@ -1,24 +1,32 @@
-# integers_comm_ring
+# The Commutative Ring of Integers: Type Theoretical Proofs With Agda
 
-In this research project, I implement naive type-theoretical proofs to formalize abstract mathematical structures using Agda. This involves building every proof and construct from scratch, reasoning about them intuitionistically. 
+## Aim
+The goal of this research project submitted as part of requirements for my MS, was to use Agda (a computerized proof assistant) to constructively build a set of proofs. These proofs are reasoned about intuitionistically, starting from base constructs all the way to various algebraic properties required for a certain abstract mathematical structure referred to as a Ring. 
 
-The final solution involves a variable of the type "Ring" which satisfies all the commutative ring axioms.
+The final solution involves an object of type "Ring" which satisfies all algebraic commutative ring axioms.
 
-Agda Codebase for "The Commutative Ring of Integers"
-ver: 2.6.3
+## Sample Proof
+![image](https://github.com/essentialblend/integers-comm-ring/assets/73982939/5f9a7c1e-a672-4068-940b-97df58c28ef3)
 
-Library for all the code used for the dissertation.
+## Construction
+- Define, construct and prove algebraic properties of natural numbers using the Peano axioms.
 
-This project consists of four main folders.
+  Ex: [Operations over naturals](https://github.com/essentialblend/integers-comm-ring/blob/main/natural_numbers/operations.agda), [properties over natural addition](https://github.com/essentialblend/integers-comm-ring/tree/main/natural_numbers/properties/addition), [properties over natural multiplication](https://github.com/essentialblend/integers-comm-ring/tree/main/natural_numbers/properties/multiplication).
+   
+- Use naturals constructively to define, construct, and prove algebraic properties of integers.
 
-- constructs: Basic types and tools required for our proofs.
+  Ex: [Properties over integral addition](https://github.com/essentialblend/integers-comm-ring/tree/main/integers_MAIN/properties/addition), [properties over integral multiplication](https://github.com/essentialblend/integers-comm-ring/tree/main/integers_MAIN/properties/multiplication), [distributive laws](https://github.com/essentialblend/integers-comm-ring/blob/main/integers_MAIN/properties/distributive_laws.agda).
 
-- natural_numbers: Definition, operations and properties over Natural Numbers.
+- Use our proofs alongside tools for predicate logic, to culminate our final proof for the "type" Ring. 
 
-- integers_MAIN: Definition, operations and properties over Integers. Main folder of interest.
+  Ex: [Final proof](https://github.com/essentialblend/integers-comm-ring/blob/main/integers_MAIN/properties/ring_proof/ring_FINAL.agda).
 
-- predicate_logic: Tools required for predicates.
- 
-Installation instructions: https://agda.readthedocs.io/en/v2.6.0.1/tools/package-system.html
+## Project Structure
 
-P.S - I'm currently improving my thesis based on the feedback, and will provide it here soon.
+- `constructs\`: Basic types and type variables.
+
+- `natural_numbers\`: Definition, operations and properties over natural numbers.
+
+- `integers_MAIN\`: Definition, operations and properties over Integers. Main folder of interest.
+
+- `predicate_logic\`: Tools for predicates.
